@@ -1,0 +1,19 @@
+name: CI Full Run
+on:
+  pull_request:
+    branches:
+      - main
+      - grok/*/*
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  automatic-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: bash tests/all.sh 2>&1

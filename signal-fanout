@@ -1,0 +1,47 @@
+#!/bin/bash
+set -e -o pipefail
+
+# The signals we're trapping.
+TRAP_SIGNALS=(SIGHUP SIGINT SIGQUIT SIGUSR1 SIGUSR2 SIGPIPE SIGTERM)
+
+# When receiving one of the above signals, send $KILL_SIGNAL to the entire
+# process tree. Notice that we must NOT use SIGINT here (and we also must not
+# propagate the original signal since it may be SIGINT) due to how shells (e.g.
+# bash) handle SIGINT. Sending SIGINT to a process tree naively doesn't stop all
+# of them. See here, why: https://www.cons.org/cracauer/sigint.html
+KILL_SIGNAL=SIGTERM
+
+if [[ "$1" == "--inner" ]]; then
+  shift
+
+  handler() {
+    signal="$1"
+    trap - "$KILL_SIGNAL"
+    echo "$(date): signal-fanout received $signal, killing processes of the current session with $KILL_SIGNAL:"
+    ps -o pid,sess,pgid,command -p $(pgrep -s0)
+    pkill "-$KILL_SIGNAL" -s0
+  }
+  for signal in "${TRAP_SIGNALS[@]}"; do
+    # shellcheck disable=SC2064
+    trap "handler $signal" "$signal"
+  done
+
+  if [[ -x "$1" ]]; then
+    # Full executable name is passed, e.g. "signal-fanout /bin/zsh {0}".
+    "$@" & wait $!
+  elif [[ ! -f "$1" ]] && which "$1" &>/dev/null; then
+    # Shell name is passed, e.g. "signal-fanout zsh {0}".
+    "$@" & wait $!
+  else
+    # Just a script file name is passed, e.g. "signal-fanout {0}".
+    bash "$@" & wait $!
+  fi
+else
+  if [[ "$1" == "" ]]; then
+    echo "Usage examples:"
+    echo "  - signal-fanout script-path"
+    echo "  - signal-fanout zsh script-path"
+    exit 1
+  fi
+  exec setsid --wait "${BASH_SOURCE[0]}" --inner "$@"
+fi
