@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e -o pipefail
 
-../../signal-fanout sh script.sh
+../../script/signal-fanout sh script.sh

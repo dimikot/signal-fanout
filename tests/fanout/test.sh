@@ -2,7 +2,7 @@
 set -e -o pipefail
 
 echo "Spawining a new session in background"
-../../signal-fanout script.sh & pid=$!
+../../script/signal-fanout script.sh & pid=$!
 
 sleep 1
 pid_sess=$(($(ps -o sess= -p "$pid")))

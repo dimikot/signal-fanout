@@ -1,0 +1,15 @@
+name: "signal-fanout"
+description: "tool to propagate received signal as SIGTERM to the entire process tree launched by the passed script"
+author: "dimikot"
+branding:
+  icon: "zap-off"
+  color: "red"
+
+runs:
+  using: "composite"
+  steps:
+    - name: shim-path
+      shell: bash
+      run: |
+        THIS_ACTION_PATH=$(realpath "$GITHUB_ACTION_PATH")
+        echo "$THIS_ACTION_PATH/script" >> "$GITHUB_PATH"

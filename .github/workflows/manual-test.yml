@@ -1,21 +1,15 @@
 name: Manual Test
 on:
   pull_request:
-    branches:
-      - main
-      - grok/*/*
   push:
-    branches:
-      - main
-    tags:
-      - "v*"
+  workflow_dispatch:
 
 jobs:
   manual-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pwd >> $GITHUB_PATH
+      - uses: ./
       - name: Long-running step (click Cancel Workflow and make sure the job stops immediately)
         shell: signal-fanout {0}
         run: |

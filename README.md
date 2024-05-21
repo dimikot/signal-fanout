@@ -51,7 +51,7 @@ An example of what's happening when you press **Cancel workflow** button: the
 step code terminates immediately after the button is pressed (in this example, I
 pressed it at around second 5 of the step run time):
 
-<img src="README.png"/>
+<img alt="picture of a canceled github workflow run" src="canceled-run.png"/>
 
 ## Motivation
 
@@ -74,6 +74,5 @@ See more details here: https://github.com/ringerc/github-actions-signal-handling
 
 ## Future Plans
 
-- Make it a GitHub Action ("install signal-fanout shell" to PATH).
 - Wait for the process subtree termination (currently, the tool doesn't wait, it
   is suitable to e.g. quickly abort build process or unit tests running).
