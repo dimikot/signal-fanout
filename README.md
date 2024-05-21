@@ -74,6 +74,5 @@ See more details here: https://github.com/ringerc/github-actions-signal-handling
 
 ## Future Plans
 
-- Make it a GitHub Action ("install signal-fanout shell" to PATH).
 - Wait for the process subtree termination (currently, the tool doesn't wait, it
   is suitable to e.g. quickly abort build process or unit tests running).

@@ -1,14 +1,8 @@
 name: CI Full Run
 on:
   pull_request:
-    branches:
-      - main
-      - grok/*/*
   push:
-    branches:
-      - main
-    tags:
-      - "v*"
+  workflow_dispatch:
 
 jobs:
   automatic-tests:
