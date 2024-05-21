@@ -51,7 +51,7 @@ An example of what's happening when you press **Cancel workflow** button: the
 step code terminates immediately after the button is pressed (in this example, I
 pressed it at around second 5 of the step run time):
 
-<img src="README.png"/>
+<img alt="picture of a canceled github workflow run" src="canceled-run.png"/>
 
 ## Motivation
 
